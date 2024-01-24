@@ -4,9 +4,16 @@ const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
 
+const todoRoutes = require("./routes/todo.route.js");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(todoRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 const port = process.env.PORT || 3000;
 const start = async () => {
