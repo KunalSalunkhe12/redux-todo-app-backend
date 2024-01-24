@@ -1,6 +1,6 @@
 const Todo = require("../models/todo.model.js");
 
-export const getTodos = async (req, res) => {
+const getTodos = async (req, res) => {
   try {
     const todos = await Todo.find();
     res.status(200).json(todos);
@@ -9,7 +9,7 @@ export const getTodos = async (req, res) => {
   }
 };
 
-export const addTodo = async (req, res) => {
+const addTodo = async (req, res) => {
   const { name, description } = req.body;
 
   if (!name || !description) {
@@ -30,7 +30,7 @@ export const addTodo = async (req, res) => {
   }
 };
 
-export const updateTodo = async (req, res) => {
+const updateTodo = async (req, res) => {
   const { id } = req.params;
   const { completed } = req.body;
 
@@ -45,7 +45,7 @@ export const updateTodo = async (req, res) => {
   }
 };
 
-export const deleteTodo = async (req, res) => {
+const deleteTodo = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id))
@@ -57,4 +57,11 @@ export const deleteTodo = async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
+};
+
+module.exports = {
+  getTodos,
+  addTodo,
+  updateTodo,
+  deleteTodo,
 };
