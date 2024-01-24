@@ -6,6 +6,7 @@ const getTodos = async (req, res) => {
     const todos = await Todo.find();
     res.status(200).json(todos);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -27,21 +28,27 @@ const addTodo = async (req, res) => {
     await todo.save();
     res.status(201).json(todo);
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: err.message });
   }
 };
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { completed } = req.body;
+  const { status } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No todo with that id");
 
   try {
-    const todo = await Todo.findByIdAndUpdate(id, { completed }, { new: true });
+    const todo = await Todo.findByIdAndUpdate(
+      { _id: id },
+      { completed: status },
+      { new: true }
+    );
     res.status(200).json(todo);
   } catch (err) {
+    console.log(err);
     res.status(404).json({ message: err.message });
   }
 };
@@ -53,9 +60,10 @@ const deleteTodo = async (req, res) => {
     return res.status(404).send("No todo with that id");
 
   try {
-    await Todo.findByIdAndRemove(id);
+    await Todo.findByIdAndDelete({ _id: id });
     res.status(200).json({ message: "Todo deleted successfully." });
   } catch (err) {
+    console.log(err);
     res.status(404).json({ message: err.message });
   }
 };
